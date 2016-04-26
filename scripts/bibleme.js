@@ -1,4 +1,4 @@
-module.exports = function(robot){
+module.exports = function(robot) {
 	// msg holds the string after bible me
     robot.hear(/bible me(.*)/i, function(msg) {
         //get the json file from the following URL
@@ -75,11 +75,16 @@ module.exports = function(robot){
                 verseChapter = inputSelection[2].split(":");
                 chapter = verseChapter[0];
                 verse = verseChapter[1];
-				verse_range = verse.split("-");
-				start_verse = verse_range[0];
-				end_verse = verse_range[1];
-				
+				//msg.send(verse);
+				start_verse = 1;
+				end_verse = 0;
+				if (verse != undefined) {
+					verse_range = verse.split("-");
+					start_verse = verse_range[0];
+					end_verse = verse_range[1];
+				}
 				if (end_verse == undefined){
+					end_verse = start_verse;
 					end_verse = start_verse;
 				}
 				
@@ -101,7 +106,7 @@ module.exports = function(robot){
     });
 };
 
-function strCmp(string1, string2){
+function strCmp(string1, string2) {
     str1 = string1.toLowerCase();
     str2 = string2.toLowerCase();
     if(str1.length == str2.length){
@@ -252,12 +257,12 @@ function processUSFMDocument(doc, returnVerse, msg, chapter, startVerse, endVers
     msg.send(reference);
 }
 
-function getReference(book, sl, chapter, verse, bible_version){
+function getReference(book, sl, chapter, verse, bible_version) {
     var ref = " - " + book + " " + chapter + ":" + verse;
     return ref+"\nhttps://door43.org/en/" + bible_version +  "/v1/"+ sl + "/" + getChapter(chapter) + ".usfm";
 }
 
-function getChapter(chapter){
+function getChapter(chapter) {
     var temp;
     if(chapter.length == 1)
         temp = "00" + chapter;
@@ -268,7 +273,7 @@ function getChapter(chapter){
     return temp;
 }
 
-function short_book(bookName){
+function short_book(bookName) {
 	if (bookName == "Gen" || bookName == "Ge" || bookName == "Gn"){
 		return "Genesis";
 	}
